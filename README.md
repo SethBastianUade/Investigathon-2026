@@ -7,6 +7,7 @@ Proyecto para el track de **Reward Hacking** de Investigathon 2026 (Y-Hat). La i
 - `Reward Hacking-Investigathon.pdf` / `.txt`: consigna del track, con los criterios de evaluación.
 - `paper-Terminal Wrench.pdf` / `.md`: paper de Terminal Wrench ([arXiv:2604.17596](https://arxiv.org/abs/2604.17596)) y su versión en Markdown.
 - `notas/bibliografia.md`: análisis de las referencias del paper y bibliografía que falta.
+- `notas/ideas-y-preguntas-mentor.md`: preguntas de investigación posibles, preguntas para el mentor y tareas pendientes.
 - `CLAUDE.md`: contexto del proyecto y del dataset para Claude Code.
 
 ## Dataset
