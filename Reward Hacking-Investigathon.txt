@@ -1,0 +1,108 @@
+Investigathon 2026  - Y-Hat
+Track
+Reward Hacking
+Laboratorio de Inteligencia Artificial Aplicada
+Departamento de Computación
+Instituto de Ciencias de la Computación
+
+Definición
+Amodei, D., Olah, C., Steinhardt, J., Christiano, P., Schulman, J., & Mané, D. (2016). Concrete problems in AI safety. arXiv preprint arXiv:1606.06565.
+There are several ways in which the problem can occur:
+Partially Observed Goals
+Complicated Systems
+Abstract Rewards
+Goodhart’s Law
+Feedback Loops
+Environmental Embedding
+
+Here we suggest some preliminary  approaches to preventing reward hacking:
+Adversarial Reward Functions
+Model Lookahead
+Adversarial Blinding
+etc
+
+Datos: ¿Qué van a analizar?
+School of Reward Hacks [LINK]
+Hay un dataset [LINK]
+Hay modelos ya finetuneados [LINK]
+Terminal Wrench: A Dataset of 331 Reward-Hackable Environments and 3,632 Exploit Trajectories [LINK]
+Hay un dataset [LINK]
+Reward Hacking Benchmark: Measuring Exploits in LLM Agents with Tool Use [LINK]
+No hay dataset para descargar
+Se podría re-construir con los datos que dan?
+
+
+
+Datos: ¿Qué van a analizar?
+School of Reward Hacks [LINK]
+Hay un dataset [LINK]
+Hay modelos ya finetuneados [LINK]
+Terminal Wrench: A Dataset of 331 Reward-Hackable Environments and 3,632 Exploit Trajectories [LINK]
+Hay un dataset [LINK]
+Reward Hacking Benchmark: Measuring Exploits in LLM Agents with Tool Use [LINK]
+No hay dataset para descargar
+Se podría re-construir con los datos que dan?
+
+
+
+Datos: ¿Qué van a analizar?
+School of Reward Hacks [LINK]
+Hay un dataset [LINK]
+Hay modelos ya finetuneados [LINK]
+Terminal Wrench: A Dataset of 331 Reward-Hackable Environments and 3,632 Exploit Trajectories [LINK]
+Hay un dataset [LINK]
+Reward Hacking Benchmark: Measuring Exploits in LLM Agents with Tool Use [LINK]
+No hay dataset para descargar
+¿Se podría re-construir con la info que dan?
+
+
+
+Metodología: ¿Cómo lo van a analizar?
+Monitoreo de CoT
+
+
+Metodología: ¿Cómo lo van a analizar?
+Monitoreo de CoT
+Análisis de activaciones internas
+Sparse AutoEncoders (SAE)
+
+
+Metodología: ¿Cómo lo van a analizar?
+Monitoreo de CoT
+Análisis de activaciones internas
+Sparse AutoEncoders (SAE)
+Linear probing
+
+
+
+Metodología: ¿Cómo lo van a analizar?
+Monitoreo de CoT
+Análisis de activaciones internas
+Sparse AutoEncoders (SAE)
+Linear probing
+Steering
+
+
+Metodología: ¿Cómo lo van a analizar?
+Monitoreo de CoT
+Análisis de activaciones internas
+Sparse AutoEncoders (SAE)
+Linear probing
+Steering
+O lo que encuentren interesante
+
+
+¿Cómo los vamos a evaluar?
+(ojo con hacer RH sobre estos lineamientos)
+Lo más importante es la metodología de investigación (revisar biblio, hipíotesis, objetivos, ...)
+Los resultados pueden ser mejores o peores
+Importa mucho el camino seguido
+Exploren la literatura antes de pensar los experimentos
+Analicen las limitaciones que tienen (tiempo, computo, etc)
+Elijan un camino y eviten la tentación de querer responder todo
+En las mentorías hagan presentaciones concisas (el tiempo es limitado - 4-5 minutos -)	
+Selección e Interpretación de resultados
+El informe final es un poster: busquen cómo transmitir la información de la mejor forma posible
+Introducción, Metodología, Hipótesis y Objetivos, Resultados, Conclusiones
+Diagramas y plots minimalistas, poco texto
+Tener un pitch de presentación del póster en 5 y en 10 minutos

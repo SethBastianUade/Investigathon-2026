@@ -1,0 +1,8 @@
+# Dataset: clone separately from https://github.com/few-sh/terminal-wrench
+terminal-wrench/
+
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.DS_Store
