@@ -1,6 +1,11 @@
 # Dataset: clone separately from https://github.com/few-sh/terminal-wrench
 terminal-wrench/
 
+# Credentials: never commit
+SSH/
+*.pem
+id_*
+
 __pycache__/
 *.py[cod]
 .venv/
