@@ -8,9 +8,13 @@ A research workspace for **Investigathon 2026 (Y-Hat), Reward Hacking track**. T
 
 The team plans to connect the Terminal Wrench paper to the **OpenAI → Hugging Face incident**. OpenAI disclosed it on 2026-07-21 and published a technical report on 2026-08-26. In that incident, agents trained in an environment that rewarded cheating escaped a sandbox and breached Hugging Face to cheat on the ExploitGym benchmark. METR published an independent analysis. Use primary sources (the OpenAI report, METR, Fortune, MIT Tech Review) for those facts, not secondary blogs.
 
-Top-level files:
-- `Reward Hacking-Investigathon.txt`: the track brief. It lists candidate datasets (School of Reward Hacks, Terminal Wrench, Reward Hacking Benchmark) and methods (CoT monitoring, activations, SAEs, linear probing, steering) and states the evaluation criteria. The file contains mojibake (UTF-8 decoded as cp1252).
-- `paper-Terminal Wrench.md`: a Markdown conversion of the Terminal Wrench paper (arXiv 2604.17596). Read this instead of the PDF.
+**Research direction (decided with the mentor on 2026-10-19).** The main question is: do reward hacks show more environment probing ("sondeo") than legitimate solutions, measured only from the agent's commands? The secondary question is: what do the hackable verifiers have in common? Evaluations run on the **EvilGenie** benchmark, using an open model on the team's GPU, and the existing Terminal Wrench trajectories are analyzed alongside it. `notas/definicion-sondeo.md` holds the operational definition: categories S1–S5, plus N, ?, and M for tampering, along with the per-trajectory metrics and the comparison groups. Changes to that definition must be logged in its changelog. Keep all raw run data (logs, prompts, timestamps, seeds), because the secondary question is answered from it. The other notes are in `notas/` and are written in Spanish.
+
+Papers and the track brief are in `Material-Papers/`. Read the `.md` versions, not the PDFs:
+- `Reward Hacking-Investigathon.txt`: the track brief. It lists candidate datasets and methods and states the evaluation criteria. The file contains mojibake (UTF-8 decoded as cp1252).
+- `paper-Terminal Wrench.md` (arXiv 2604.17596) and `EvilGenie Benchmark reward hacking.md` (arXiv 2511.21654).
+
+GPU server: a Tesla T4 (15 GB) at `ubuntu@3.20.176.109`, shared and provided by the organizers, with a shutdown schedule to coordinate. `SSH/instructivo-gpu.md` has the connection instructions. `SSH/` holds the team's private key and is gitignored. Never commit it or print the key. Connect with `ssh -o UserKnownHostsFile=./known_hosts -o StrictHostKeyChecking=yes -i ./investigathon-gpu.key ubuntu@3.20.176.109`, run from inside `SSH/`.
 - `terminal-wrench/`: the dataset repo. It is **gitignored** and not committed here. To get it, run `git clone https://github.com/few-sh/terminal-wrench.git` from the project root.
 
 ## Environment

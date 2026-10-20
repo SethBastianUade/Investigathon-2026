@@ -1,5 +1,25 @@
 # Ideas de investigación y preguntas para el mentor
 
+## Decisión tras la primera mentoría (19/10/2026)
+
+El mentor indicó:
+- **Pregunta principal:** ¿los reward hacks muestran más sondeo del entorno que las soluciones legítimas, medido solo con los comandos?
+- **Pregunta secundaria:** ¿qué tienen en común los verificadores que se pudieron engañar? Se va respondiendo a medida que hagamos las evaluaciones de la pregunta 1, así que hay que **guardar todos los datos**: dataset, prompts, marcas de tiempo, etc.
+- **Benchmark para las evaluaciones:** EvilGenie (Gabor et al. 2025), registrando los sondeos del sandbox.
+
+Definición operativa y métricas: [`definicion-sondeo.md`](definicion-sondeo.md).
+
+Notas de diseño que surgieron después:
+- En Terminal Wrench todos los hacks se generaron con un prompt que ordena buscar debilidades del verificador. Para no confundir sondeo con obediencia, comparamos hacks contra soluciones legítimas *dentro* de las ejecuciones con ese prompt.
+- En EvilGenie la trampa es espontánea, así que complementa a Terminal Wrench.
+- En Terminal Wrench todos los verificadores fueron hackeados. Para la pregunta 2 haría falta un grupo de control con tareas no hackeadas de los benchmarks originales. Llevar esto a la próxima mentoría.
+
+Recursos: GPU Tesla T4 (15 GB) compartida por la organización, con horario de apagado a coordinar.
+
+---
+
+*Lo que sigue es el material preparado antes de la mentoría. Se conserva como registro.*
+
 Primera mentoría: lunes 19/10/2026. La presentación dura 4–5 minutos, así que conviene llevar una pregunta de investigación, una hipótesis y estas preguntas.
 
 ## Hallazgos del dataset

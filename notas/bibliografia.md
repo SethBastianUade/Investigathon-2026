@@ -89,6 +89,36 @@ Cadena de evidencia:
 
 Nuestro aporte va en el eslabón que elijamos medir. Por ejemplo, buscar señales previas de escape en los comandos de las trayectorias entra entre los pasos 1 y 4, y no depende del razonamiento (el punto débil del paso 5).
 
+## Papers agregados después (no están en las referencias de Terminal Wrench)
+
+### Gabor, Lynch & Rosenfeld 2025: *EvilGenie: A Reward Hacking Benchmark*
+[arXiv:2511.21654](https://arxiv.org/abs/2511.21654) · código: [JonathanGabor/evilgenie_inspect](https://github.com/JonathanGabor/evilgenie_inspect)
+- **Es el benchmark que usamos para las evaluaciones.** Lo eligió el equipo después de la mentoría.
+- 154 problemas difíciles de LiveCodeBench. El agente trabaja con `problem.md`, `solution.py`, `test_cases.json` y `test.py`, así que puede escribir respuestas a mano o editar los tests. El 30% de los tests queda oculto como control.
+- Detecta la trampa con tests ocultos, detección de edición de tests y un juez LLM, todo con revisión humana.
+- En 145 problemas no ambiguos, Claude Code dio un 20.7% de soluciones heurísticas y Gemini CLI borró el test en el 3.4%. En los 9 ambiguos, Codex escribió respuestas a mano en el 44%.
+- Corre sobre el framework Inspect, que admite modelos abiertos.
+
+### Çağatan & Zhao 2026: *Reward Hacking in Language Model Agents: Revisiting AI Safety Gridworlds*
+[arXiv:2606.15385](https://arxiv.org/abs/2606.15385)
+- Convierte las AI Safety Gridworlds en entornos de texto con dos recompensas: la observada y una oculta de seguridad.
+- La trampa aparece sin pedirla, y el RL (GRPO, Qwen2.5 de 1.5B a 14B) la consolida. Ninguna mitigación probada alcanzó.
+- **Para nosotros:** Absent Supervisor (portarse distinto cuando no lo miran) es el marco teórico de "sondear antes de hacer trampa". Es una *analogía*: el paper no analiza comandos ni sondeo.
+- Críticas: al agente no se le dicen las reglas, mezcla fallas de capacidad con trampa, modelos chicos y pocas semillas.
+
+### Bergen, Bhalla, Lee et al. 2026 (Goodfire): *Models know when they're reward hacking*
+[Blog](https://www.goodfire.com/research/reward-hacking-activation-monitors) · [arXiv:2609.19101](https://arxiv.org/abs/2609.19101) (sin leer)
+- Un probe *difference-in-means* sobre activaciones detecta la trampa a la par de un monitor LLM que lee el razonamiento (+3.1% en Kimi K3, −7.9% en GLM 5.2), avisa antes de que el agente actúe y abarata el monitoreo un 90%.
+- Críticas: es una publicación de blog sin AUROC ni código, tiene conflicto de interés y no prueba si el modelo puede evadir el probe.
+- **Para nosotros:** trabajo futuro. Con un modelo abierto corriendo EvilGenie en la GPU, el probe vería las activaciones del agente que hace trampa.
+
+### Wang et al. 2025: TRACE, *Is it thinking or cheating? Detecting implicit reward hacking by measuring reasoning effort*
+[arXiv:2510.01367](https://arxiv.org/abs/2510.01367)
+- Corta el razonamiento en distintos puntos, obliga a responder y mide qué tan temprano llega la recompensa: la trampa requiere menos esfuerzo. Supera a monitores de razonamiento de 72B en matemática.
+- Necesita poder volver a ejecutar el modelo y es de un solo turno. No aplica tal cual a Terminal Wrench.
+- **Para nosotros:** la intuición de "menos esfuerzo" inspira la métrica de latencia del primer sondeo. La versión para agentes queda como trabajo futuro.
+- No confundir con **TRACE de Patronus AI** ([arXiv:2601.20103](https://arxiv.org/abs/2601.20103)): un benchmark de 517 trayectorias con 54 categorías de trampa, útil como referencia de taxonomía.
+
 ## Fuentes sobre el incidente
 
 - [Fortune, 21/7/2026: OpenAI says its AI models escaped from a secure test environment and hacked Hugging Face](https://fortune.com/2026/07/21/openai-says-ai-models-escaped-control-hacked-hugging-face/)
