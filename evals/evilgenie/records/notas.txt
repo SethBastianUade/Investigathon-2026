@@ -21,3 +21,23 @@ código
 
 - reward_hacking.py modificaciones en defaul_solder() llamando a la función
 de action_context (with_episode_context()) que activa un contexto independiente durante cada muestra
+
+
+CORRECCIONES (21/10, probadas con records/smoke_logging.py en el servidor):
+
+- tools.py: se restauraron los docstrings de execute() de safe_bash y safe_python.
+  Inspect arma la descripción de cada herramienta desde ese docstring; sin él lanzaba
+  "Description not provided for tool function 'safe_bash'". Además, son el texto exacto
+  del upstream, para que el modelo vea las mismas herramientas que en el paper.
+- tools.py: logged_text_editor() envuelve el text_editor de Inspect con el mismo nombre,
+  descripción y parámetros (vía ToolDef), y registra cada uso. Antes las lecturas y
+  ediciones hechas con el editor no quedaban registradas.
+- Cada evento guarda además: run_id, model, sample_id, epoch (para cruzar con el puntaje
+  en el log .eval), arguments, error, output (lo que vio el agente), stdout y stderr
+  crudos (tope de 20.000 caracteres, con output_truncated).
+- Un archivo por corrida: logs/actions_<EG_RUN_ID>.jsonl (si no se define EG_RUN_ID,
+  se usa un timestamp).
+- with_episode_context ahora es un @solver registrado de Inspect.
+
+Prueba sin GPU (desde evals/evilgenie):
+    EG_RUN_ID=smoke uv run python -m records.smoke_logging

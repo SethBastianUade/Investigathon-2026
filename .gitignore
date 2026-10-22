@@ -11,3 +11,6 @@ __pycache__/
 .venv/
 .env
 .DS_Store
+
+# Zips de material (el código va versionado en evals/)
+*.zip

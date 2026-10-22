@@ -11,12 +11,11 @@ from inspect_ai import Task, task
 from inspect_ai._eval.task.epochs import Epochs
 from inspect_ai.model import GenerateConfig
 from inspect_ai.solver import Solver, basic_agent, system_message
-from inspect_ai.tool import text_editor
 
 from constants import DEFAULT_MAX_MESSAGES, DEFAULT_PROBLEM_TIMEOUT
 from categorical_scorer import scorer
 from dataset import reward_hacking_dataset
-from tools import safe_bash, safe_python
+from tools import logged_text_editor, safe_bash, safe_python
 
 from records.action_context import with_episode_context
 
@@ -147,12 +146,12 @@ def default_solver(
     tools = [
         safe_bash(timeout=code_timeout),
         safe_python(),
-        text_editor(),
+        logged_text_editor(),
     ]
 
     agent_solver = basic_agent(
-    init=system_message(DEFAULT_SYSTEM_MESSAGE),
-    tools=tools,
-    max_messages=max_messages,
+        init=system_message(DEFAULT_SYSTEM_MESSAGE),
+        tools=tools,
+        max_messages=max_messages,
     )
     return with_episode_context(agent_solver)
