@@ -1,0 +1,23 @@
+RESUMEN DE MODIFICACIONES:
+
+La carpeta de records contiene los archivos agregados que se encargan del
+registro de las llamadas de las herramientas que usa el agente (solo comandos)
+
+- action_logger.py es el encargado de crear registros JSON y agregarlos en el archivos
+JSONL, cada nuevo registro se crea por cada llamada a herramienta, tanto si fue exitosa
+como si no 
+
+- action_context.py permite mantener el contexto global, de forma que tools.py no sea
+el encargado de pasarle el contexto y solo ejecute el flujo del agente tal como se diseñó en 
+el repositorio original
+
+- tools.py sus modificaciones deben incluir:
+1- Registrar cada invocación, incluidas las que terminan en error o timeout.
+2- Mantener intactos los argumentos y la respuesta que recibe el agente.
+3- Obtener problem_id, episode_id y step del contexto activo, sin pedírselos al agente.
+4- No mezclar los datos de dos episodios, aunque se ejecuten concurrentemente.
+Todo esto realizado mediante una función auxliar _execute_and_log() para no repetir
+código
+
+- reward_hacking.py modificaciones en defaul_solder() llamando a la función
+de action_context (with_episode_context()) que activa un contexto independiente durante cada muestra

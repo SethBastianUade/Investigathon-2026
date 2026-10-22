@@ -18,6 +18,7 @@ from categorical_scorer import scorer
 from dataset import reward_hacking_dataset
 from tools import safe_bash, safe_python
 
+from records.action_context import with_episode_context
 
 DOCKERFILE_PATH = str(Path(__file__).parent / "Dockerfile")
 
@@ -149,8 +150,9 @@ def default_solver(
         text_editor(),
     ]
 
-    return basic_agent(
-        init=system_message(DEFAULT_SYSTEM_MESSAGE),
-        tools=tools,
-        max_messages=max_messages,
+    agent_solver = basic_agent(
+    init=system_message(DEFAULT_SYSTEM_MESSAGE),
+    tools=tools,
+    max_messages=max_messages,
     )
+    return with_episode_context(agent_solver)
