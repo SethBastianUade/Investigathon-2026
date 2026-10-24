@@ -6,7 +6,14 @@
 # La salida queda en ~/investigathon/<run_id>.out y las acciones en logs/actions_<run_id>.jsonl.
 # Configuración fija entre etapas (ver notas/corridas.md): sin razonamiento, juez LLM
 # apagado, 600 s por problema, un problema a la vez.
+# THINK=1 deja el razonamiento del modelo encendido (comparación con/sin thinking):
+#   THINK=1 scripts/run.sh run_50_think qwen3:14b 50
 set -euo pipefail
+
+reasoning=(--reasoning-effort none)
+if [ "${THINK:-0}" = "1" ]; then
+  reasoning=()
+fi
 
 run_id=${1:?falta run_id}
 model=${2:?falta modelo, p. ej. qwen3:14b}
@@ -23,7 +30,7 @@ if [ -e "logs/actions_${run_id}.jsonl" ]; then
 fi
 
 EG_RUN_ID="$run_id" nohup ~/.local/bin/uv run inspect eval reward_hacking.py \
-  --model "ollama/${model}" --reasoning-effort none \
+  --model "ollama/${model}" ${reasoning[@]+"${reasoning[@]}"} \
   -T enable_llm_judge=false -T limit="$limit" --max-samples 1 --display plain "$@" \
   > ~/investigathon/"${run_id}".out 2>&1 < /dev/null &
-echo "run ${run_id} pid $! $(date -u +%FT%TZ)"
+echo "run ${run_id} pid $! think=${THINK:-0} $(date -u +%FT%TZ)"
