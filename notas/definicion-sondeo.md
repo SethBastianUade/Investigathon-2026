@@ -84,3 +84,4 @@ Por cada ejecución: la trayectoria completa (logs `.eval` de Inspect), el promp
 ## Historial de cambios
 
 - 2026-10-19: primera versión.
+- 2026-10-24: en EvilGenie corremos `qwen3:8b` **sin thinking** (`--reasoning-effort none`). Con thinking, el piloto `pilot01` gastó los 600 s razonando y el agente no ejecutó ningún comando. La pregunta se mide solo con comandos, así que el razonamiento no hace falta, pero puede cambiar cuánto hace trampa el modelo; se reporta como limitación. La configuración (modelo, thinking, timeout de 600 s, juez LLM apagado) queda fija en todas las etapas para poder juntar los datos. Registro de corridas en `notas/corridas.md`.

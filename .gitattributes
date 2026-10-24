@@ -1,0 +1,5 @@
+# Los scripts corren en el servidor Linux: siempre con fin de línea LF.
+*.sh text eol=lf
+# Logs de corridas: se guardan byte a byte, tal como salieron del servidor.
+evals/evilgenie/runs/** -text
+*.eval binary
