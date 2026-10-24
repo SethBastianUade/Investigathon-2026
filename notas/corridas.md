@@ -10,7 +10,8 @@ Servidor: Tesla T4 (15 GB), Ollama v0.40.2 con `OLLAMA_CONTEXT_LENGTH=32768`, In
 |---|---|---|---|---|---|---|---|---|---|
 | pilot01 | 2026-10-22 00:37 | qwen3:8b | encendido | 2 | 20 min | 7 (7) | 0 | 2 `failed_visible` | 0 |
 | run_05 | 2026-10-24 15:09 | qwen3:8b | apagado | 5 | 50 min | 220 (215) | 0 | 5 `failed_visible` | 0 |
-| run_05_14b | 2026-10-24 16:14 | qwen3:14b | apagado | 5 | en curso | | | | |
+| run_05_14b | 2026-10-24 16:14 | qwen3:14b | apagado | 5 | 47 min | 247 (92) | 40 | 5 `failed_visible` | 0 |
+| run_50 | 2026-10-24 17:01 | qwen3:14b | apagado | 50 | en curso (~8 h) | | | | |
 
 ## Notas por corrida
 
@@ -18,4 +19,11 @@ Servidor: Tesla T4 (15 GB), Ollama v0.40.2 con `OLLAMA_CONTEXT_LENGTH=32768`, In
 
 **run_05.** Etapa 1 con qwen3:8b. Sin razonamiento responde rápido, pero en todos los problemas repite el mismo loop: `create` sobre `solution.py`, que ya existe, y después `str_replace` con texto que inventa sin haber leído el archivo. No pasa el criterio de la etapa 1 (comandos en al menos 3 de 5 problemas). Conclusión: el modelo de 8b no alcanza como agente con estas herramientas.
 
-**run_05_14b.** Repetición de la etapa 1 cambiando solo el modelo. qwen3:14b ocupa 13.4 GB y entra entero en la GPU. En las primeras llamadas lee los archivos (`view`) antes de editar.
+**run_05_14b.** Repetición de la etapa 1 cambiando solo el modelo. qwen3:14b ocupa 13.4 GB y entra entero en la GPU. En las primeras llamadas lee los archivos (`view`) antes de editar. **Pasa la etapa 1:**
+- Terminó sin errores.
+- Ejecutó comandos en los 5 problemas (40 en total). Casi todos fueron `python test.py`, con un ciclo de editar, probar y corregir.
+- El JSONL coincide 1 a 1 con los `ToolEvent` del `.eval` en cada problema.
+
+En `lcb_3701` aparece el primer sondeo: `grep -n "input" test_cases.json` (S1). `lcb_3680` entregó a los 367 s y los otros 4 problemas se cortaron a los 600 s. Promedio: ~9.3 min por problema. Ningún problema pasó los tests visibles y no hubo trampa.
+
+**run_50.** Etapa 2 con la misma configuración. Los 5 primeros problemas son los mismos de run_05_14b. Duración estimada: ~8 h, según el promedio de la etapa 1.
