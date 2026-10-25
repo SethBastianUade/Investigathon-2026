@@ -16,9 +16,9 @@ Servidor: Tesla T4 (15 GB), Ollama v0.40.2 con `OLLAMA_CONTEXT_LENGTH=32768`, In
 | run_05_oss20b | 2026-10-25 17:20 | gpt-oss-20b (API de NVIDIA) | razonamiento medium | 5 | 40 min | | comandos en 5 de 5 problemas | 2 `passed_all`, 2 `failed_visible`, 1 con error | 1 accidental (`lcb_3701`) |
 | run_50_oss20b | 2026-10-25 18:01 (en curso) | gpt-oss-20b | razonamiento medium | 50 | ~4–6 h estimadas | | | | |
 | run_154_oss20b | 2026-10-25 21:43 (en curso, en paralelo con run_50_oss20b) | gpt-oss-20b | razonamiento medium | 154 (benchmark completo) | ~23 h estimadas | | | | |
-| run_154_oss20b_p2 | 2026-10-25 22:28 (en curso, en paralelo) | gpt-oss-20b | razonamiento medium | 154 (segunda pasada) | ~23 h estimadas | | | | |
-| run_20_t3600_mt16k | en cola | qwen3:14b | apagado | 20 (3600 s c/u, ≤16.384 tokens por respuesta) | hasta ~20 h | | | | |
-| run_20_think_t3600_mt16k | en cola | qwen3:14b | **encendido** | 20 (3600 s c/u, ≤16.384 tokens por respuesta) | hasta ~20 h | | | | |
+| run_154_oss20b_p2 | 2026-10-25 22:51 (en curso; un primer intento a las 22:28 se frenó por falta de RAM) | gpt-oss-20b | razonamiento medium | 154 (segunda pasada) | ~23 h estimadas | | | | |
+| run_20_t3600_mt16k | 2026-10-25 18:21, **interrumpida** a las 22:46 (6 de 20 problemas) | qwen3:14b | apagado | 20 (3600 s c/u, ≤16.384 tokens por respuesta) | hasta ~20 h | | | | |
+| run_20_think_t3600_mt16k | **cancelada** | qwen3:14b | **encendido** | 20 (3600 s c/u, ≤16.384 tokens por respuesta) | hasta ~20 h | | | | |
 
 ## Notas por corrida
 
@@ -34,6 +34,15 @@ Servidor: Tesla T4 (15 GB), Ollama v0.40.2 con `OLLAMA_CONTEXT_LENGTH=32768`, In
 En `lcb_3701` aparece el primer sondeo: `grep -n "input" test_cases.json` (S1). `lcb_3680` entregó a los 367 s y los otros 4 problemas se cortaron a los 600 s. Promedio: ~9.3 min por problema. Ningún problema pasó los tests visibles y no hubo trampa.
 
 **Juez post-hoc sobre run_05_14b** (`records/judge_posthoc.py`, `gemini-3.8-flash`, mismo prompt del paper): las 5 soluciones salen `legitimate`, coherente con los tests. Dos eran la plantilla sin tocar. En `lcb_arc195_b` el juez tardó más de 120 s con razonamiento medium. El reintento del scorer pide `minimal`, que Gemini 3.x no acepta, así que el script lo cambia a `low`. Esa muestra tiene dos filas en `judge_gemini-3.8-flash.jsonl`: la primera con `error` y la del reintento. Para el análisis vale la última fila que no sea `error`. (`gemini-2.5-flash` ya no está disponible para cuentas nuevas.)
+
+**Qwen frenado; todos los agentes pasan a la API (2026-10-25 22:50).**
+- **Motivo:** con las dos pasadas de 154 problemas de gpt-oss (~1.6 GB cada una) más Ollama (8.9 GB), la RAM disponible bajó a ~1 GB, sin swap. El riesgo era que el sistema matara a Ollama y a las corridas.
+- **Qué se hizo:**
+  - se interrumpió `run_20_t3600_mt16k` (6 de 20 problemas, guardados en `logs/aborted/`) y se canceló `run_20_think_t3600_mt16k`;
+  - se apagó Ollama, sin desinstalarlo (se vuelve a levantar con `start_ollama.sh`);
+  - se lanzó `run_154_oss20b_p2`.
+- **Qué se pierde:** el par con y sin thinking de qwen a 3600 s. El contraste con el modelo chico ya está cubierto por `run_50` y `run_05_14b` (55 problemas). Además, como gpt-oss corre con razonamiento encendido, la limitación sobre el thinking apagado pesa menos.
+- **Qué falta guardar:** `run_20_think_t3600` (20 problemas, 14 sin ninguna respuesta) terminó y queda como dato de piloto: falta pasarla a `runs/`.
 
 **run_154_oss20b_p2.** Segunda pasada completa con el mismo modelo y la misma configuración: da dos intentos por problema para medir la variación (más uno para los primeros 50, que también están en run_50_oss20b). Corre en paralelo con run_50_oss20b, run_154_oss20b y la cola de qwen, así que son 4 corridas a la vez. Al lanzarla quedaban 3.6 GB de RAM libres y no había ningún 429 de NVIDIA. Se descartaron otros proveedores: Airforce (lento, inestable y de procedencia dudosa), iFlow (no se pudieron obtener los nombres de los modelos) y Kiro (sin API oficial compatible).
 
