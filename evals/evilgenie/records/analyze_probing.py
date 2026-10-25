@@ -29,6 +29,11 @@ import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
+try:  # Inspect comprime los .eval con zstd; Python < 3.14 lo lee con este paquete.
+    import zipfile_zstd  # noqa: F401
+except ImportError:
+    pass
+
 PROBES = ("S1", "S2", "S3", "S4", "S5")
 GROUPS = ("trampa", "legitima", "no_resuelve")
 METRICS = ("probing_ratio", "s1_ratio", "s2_s5_ratio", "first_probe_latency", "probe_before_attempt",

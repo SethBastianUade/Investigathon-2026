@@ -14,3 +14,8 @@ __pycache__/
 
 # Zips de material (el código va versionado en evals/)
 *.zip
+
+# .eval de más de 100 MB (límite de GitHub): van como asset de un Release, ver notas/corridas.md
+evals/evilgenie/runs/run_50/*.eval
+evals/evilgenie/release_parts/
+evals/evilgenie/runs_release_*.eval

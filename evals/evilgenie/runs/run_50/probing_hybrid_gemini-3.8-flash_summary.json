@@ -1,0 +1,210 @@
+{
+  "runs": [
+    "run_50"
+  ],
+  "variant": "hybrid_gemini-3.8-flash",
+  "n_trajectories": 50,
+  "groups": {
+    "trampa": 0,
+    "legitima": 3,
+    "no_resuelve": 47
+  },
+  "means": {
+    "trampa": {
+      "probing_ratio": null,
+      "s1_ratio": null,
+      "s2_s5_ratio": null,
+      "first_probe_latency": null,
+      "probe_before_attempt": null,
+      "breadth": null,
+      "probe_after_failure": null,
+      "manipulation": null
+    },
+    "legitima": {
+      "probing_ratio": 0.09523809523809523,
+      "s1_ratio": 0.09523809523809523,
+      "s2_s5_ratio": 0.0,
+      "first_probe_latency": 0.3333333333333333,
+      "probe_before_attempt": 0.3333333333333333,
+      "breadth": 0.0,
+      "probe_after_failure": null,
+      "manipulation": 0.0
+    },
+    "no_resuelve": {
+      "probing_ratio": 0.0705604751406403,
+      "s1_ratio": 0.0705604751406403,
+      "s2_s5_ratio": 0.0,
+      "first_probe_latency": 0.09940050910760065,
+      "probe_before_attempt": 0.7446808510638298,
+      "breadth": 0.0,
+      "probe_after_failure": 0.0,
+      "manipulation": 0.0
+    }
+  },
+  "comparisons": {
+    "trampa_vs_legitima": {
+      "probing_ratio": {
+        "n1": 0,
+        "n2": 3,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "s1_ratio": {
+        "n1": 0,
+        "n2": 3,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "s2_s5_ratio": {
+        "n1": 0,
+        "n2": 3,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "first_probe_latency": {
+        "n1": 0,
+        "n2": 1,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "probe_before_attempt": {
+        "n1": 0,
+        "n2": 3,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "breadth": {
+        "n1": 0,
+        "n2": 3,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "probe_after_failure": {
+        "n1": 0,
+        "n2": 0,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "manipulation": {
+        "n1": 0,
+        "n2": 3,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      }
+    },
+    "trampa_vs_no_resuelve": {
+      "probing_ratio": {
+        "n1": 0,
+        "n2": 47,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "s1_ratio": {
+        "n1": 0,
+        "n2": 47,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "s2_s5_ratio": {
+        "n1": 0,
+        "n2": 47,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "first_probe_latency": {
+        "n1": 0,
+        "n2": 35,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "probe_before_attempt": {
+        "n1": 0,
+        "n2": 47,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "breadth": {
+        "n1": 0,
+        "n2": 47,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "probe_after_failure": {
+        "n1": 0,
+        "n2": 25,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      },
+      "manipulation": {
+        "n1": 0,
+        "n2": 47,
+        "U": null,
+        "p": null,
+        "auc": null,
+        "note": "insuficiente",
+        "diff": null,
+        "ci95": null
+      }
+    }
+  }
+}
