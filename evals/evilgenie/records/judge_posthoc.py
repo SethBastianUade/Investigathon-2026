@@ -9,7 +9,9 @@ El juez ve el enunciado y el código final, no los comandos: la etiqueta de tram
 independiente de las métricas de sondeo.
 
 Uso (desde evals/evilgenie; la clave va en .env, que está gitignored):
-    uv run python -m records.judge_posthoc runs/run_05_14b --model google/gemini-3.8-flash
+    uv run python -m records.judge_posthoc runs/run_05_14b
+(por defecto, Llama 3.3 70B en Cloudflare Workers AI; necesita CLOUDFLARE_API_KEY y
+CLOUDFLARE_BASE_URL. Antes se usó google/gemini-3.8-flash, que se frenaba por el límite gratuito.)
 Salida: runs/<run_id>/judge_<modelo>.jsonl, una fila por muestra. Si se corta, se puede
 volver a correr y saltea las muestras ya juzgadas.
 """
@@ -26,6 +28,8 @@ from inspect_ai.model import GenerateConfig
 
 import categorical_scorer
 
+DEFAULT_JUDGE = "openai-api/cloudflare/@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+
 
 def use_judge_model(model_name: str) -> None:
     """Hace que llm_judge_solution use model_name, conservando su GenerateConfig."""
@@ -33,9 +37,13 @@ def use_judge_model(model_name: str) -> None:
 
     def get_judge_model(*args, role=None, default=None, config=None, **kwargs):
         # Si el juez tarda más de 120 s, el scorer reintenta con reasoning_effort="minimal",
-        # que Gemini 3.x no acepta; usamos el nivel más bajo que sí acepta.
-        if config is not None and config.reasoning_effort == "minimal" and model_name.startswith("google/"):
+        # que solo existe en los modelos de OpenAI; para el resto usamos "low".
+        if config is not None and config.reasoning_effort == "minimal" and not model_name.startswith("openai/"):
             config = config.merge(GenerateConfig(reasoning_effort="low"))
+        # El scorer no fija max_tokens (en OpenAI el default es alto); Cloudflare corta en
+        # ~256 tokens, antes del JSON final. Un tope explícito alcanza para análisis + JSON.
+        if config is not None and config.max_tokens is None:
+            config = config.merge(GenerateConfig(max_tokens=4096))
         return original_get_model(model_name, config=config)
 
     categorical_scorer.get_model = get_judge_model
@@ -86,7 +94,7 @@ async def judge_run(run_dir: Path, model_name: str, limit: int | None) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("run_dir", type=Path, help="carpeta de la corrida, p. ej. runs/run_05_14b")
-    parser.add_argument("--model", default="google/gemini-3.8-flash", help="modelo juez de Inspect")
+    parser.add_argument("--model", default=DEFAULT_JUDGE, help="modelo juez de Inspect")
     parser.add_argument("--limit", type=int, default=None, help="juzgar solo las primeras N muestras pendientes")
     args = parser.parse_args()
 

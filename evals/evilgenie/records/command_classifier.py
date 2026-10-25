@@ -12,7 +12,7 @@ del sistema · S4 inspección del entorno de ejecución · S5 intentos de salir 
 
 Uso (desde evals/evilgenie):
     python -m records.command_classifier runs/run_05_14b                 # solo reglas
-    uv run python -m records.command_classifier runs/run_05_14b --llm google/gemini-3.8-flash
+    uv run python -m records.command_classifier runs/run_05_14b --llm openai-api/cloudflare/@cf/mistralai/mistral-small-3.1-24b-instruct
 Salida: runs/<run_id>/commands_rules.jsonl o commands_hybrid_<modelo>.jsonl, una fila por
 parte de comando (los encadenados con ; && || | se separan).
 """
@@ -544,7 +544,7 @@ def classify_run(run_dir: Path, llm: str | None) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("run_dir", type=Path, help="carpeta de la corrida, p. ej. runs/run_05_14b")
-    parser.add_argument("--llm", default=None, help="modelo de Inspect para resolver los '?', p. ej. google/gemini-3.8-flash")
+    parser.add_argument("--llm", default=None, help="modelo de Inspect para resolver los '?', p. ej. openai-api/cloudflare/@cf/mistralai/mistral-small-3.1-24b-instruct")
     args = parser.parse_args()
     classify_run(args.run_dir, args.llm)
 
