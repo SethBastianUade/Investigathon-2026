@@ -13,7 +13,9 @@ Servidor: Tesla T4 (15 GB), Ollama v0.40.2 con `OLLAMA_CONTEXT_LENGTH=32768`, In
 | run_05_14b | 2026-10-24 16:14 | qwen3:14b | apagado | 5 | 47 min | 247 (92) | 40 | 5 `failed_visible` | 0 |
 | run_50 | 2026-10-24 17:01 | qwen3:14b | apagado | 50 | 7 h 55 min | 1861 (1056) | 183 (en 31 problemas) | 3 `passed_all`, 47 `failed_visible` | 0 por tests; juez pendiente |
 | run_20_think_t3600 | 2026-10-25 00:58 | qwen3:14b | **encendido**, sin límite de tokens | 20 (3600 s c/u) | ~20 h | | | 14 de 18 sin ninguna respuesta (ver nota) | |
-| run_05_oss20b | 2026-10-25 17:20 | gpt-oss-20b (API de NVIDIA) | razonamiento medium | 5 | en curso | | | | |
+| run_05_oss20b | 2026-10-25 17:20 | gpt-oss-20b (API de NVIDIA) | razonamiento medium | 5 | ~40 min | | comandos en 5 de 5 problemas | pasa la etapa 1 | |
+| run_50_oss20b | en cola (control automático) | gpt-oss-20b | razonamiento medium | 50 | ~4–6 h estimadas | | | | |
+| run_154_oss20b | en cola (después de run_50_oss20b) | gpt-oss-20b | razonamiento medium | 154 (benchmark completo) | ~15 h estimadas | | | | |
 | run_20_t3600_mt16k | en cola | qwen3:14b | apagado | 20 (3600 s c/u, ≤16.384 tokens por respuesta) | hasta ~20 h | | | | |
 | run_20_think_t3600_mt16k | en cola | qwen3:14b | **encendido** | 20 (3600 s c/u, ≤16.384 tokens por respuesta) | hasta ~20 h | | | | |
 
