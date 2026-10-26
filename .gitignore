@@ -20,3 +20,4 @@ evals/evilgenie/runs/run_50/*.eval
 evals/evilgenie/release_parts/
 evals/evilgenie/runs_release_*.eval
 evals/evilgenie/runs/run_50_oss20b/*.eval
+evals/evilgenie/runs/run_154_oss20b/*.eval

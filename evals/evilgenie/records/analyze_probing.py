@@ -22,6 +22,8 @@ carpeta de la primera corrida (o en --out).
 import argparse
 import csv
 import json
+import copy
+import io
 import math
 import random
 import statistics
@@ -47,6 +49,38 @@ def read_jsonl(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+def _zstd_decompress_all(raw: bytes) -> bytes:
+    """Descomprime todos los frames zstd (zipfile solo lee el primero)."""
+    try:
+        from compression import zstd  # Python >= 3.14
+
+        return zstd.decompress(raw)
+    except ImportError:
+        import zstandard
+
+        reader = zstandard.ZstdDecompressor().stream_reader(io.BytesIO(raw), read_across_frames=True)
+        return reader.read()
+
+
+def read_member(z: zipfile.ZipFile, name: str) -> bytes:
+    """Lee un archivo del .eval. Inspect escribe las muestras grandes (cientos de MB, p. ej.
+    en run_154_oss20b) en varios frames zstd; zipfile descomprime solo el primero y falla
+    el CRC. En ese caso se leen los bytes comprimidos y se descomprimen todos los frames."""
+    try:
+        return z.read(name)
+    except zipfile.BadZipFile:
+        info = copy.copy(z.getinfo(name))
+        info.compress_type = zipfile.ZIP_STORED
+        info.file_size = info.compress_size
+        with z.open(info) as f:
+            f._expected_crc = None
+            raw = f.read()
+        data = _zstd_decompress_all(raw)
+        if zipfile.crc32(data) != z.getinfo(name).CRC:
+            raise zipfile.BadZipFile(f"CRC incorrecto en {name} aun leyendo todos los frames")
+        return data
+
+
 def read_scores(run_dir: Path) -> dict[tuple[str, int], dict]:
     evals = sorted(run_dir.glob("*.eval"))
     if len(evals) != 1:
@@ -56,7 +90,11 @@ def read_scores(run_dir: Path) -> dict[tuple[str, int], dict]:
         for name in z.namelist():
             if not name.startswith("samples/"):
                 continue
-            sample = json.loads(z.read(name))
+            sample = json.loads(read_member(z, name))
+            # Las muestras que cortaron con error (p. ej. respuesta vacía de la API) no
+            # tienen puntaje: quedan fuera del análisis.
+            if not sample.get("scores"):
+                continue
             value = sample["scores"]["scorer"]["value"]
             scores[(str(sample["id"]), sample["epoch"])] = {
                 "test_result": value["test_result"],
