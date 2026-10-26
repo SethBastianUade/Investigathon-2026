@@ -154,7 +154,8 @@ def main() -> None:
         results=EvalResults(total_samples=len(samples), completed_samples=len(samples)),
         samples=samples,
     )
-    slug = re.sub(r"[^A-Za-z0-9]+", "-", f"{args.tasks}_{'-'.join(args.trees)}").strip("-")[:60]
+    parts = [args.tasks if args.tasks != ".*" else "todas", "-".join(models), "-".join(args.trees)]
+    slug = re.sub(r"[^A-Za-z0-9.]+", "-", "_".join(parts)).strip("-")[:80]
     out = args.out / f"{now:%Y-%m-%dT%H-%M-%S}_terminal-wrench_{slug}.eval"
     args.out.mkdir(parents=True, exist_ok=True)
     write_eval_log(log, str(out))
