@@ -6,12 +6,15 @@ echo "## Servidor"; uptime; free -h | sed -n 1,2p; df -h / | tail -1
 nvidia-smi --query-gpu=memory.used,memory.total,utilization.gpu --format=csv,noheader 2>/dev/null
 echo "## Corridas de Inspect activas (modelo, límite)"
 pgrep -af "[.]venv/bin/inspect eval reward_hacking.py" | grep -o "\-\-model [^ ]*\|limit=[0-9]*\|timeout_per_problem=[0-9]*" | paste -sd' ' | sed 's/--model /\n--model /g'
-echo; echo "## Colas y controles"
-for q in ~/investigathon/gate_oss20b.log ~/investigathon/queue_mt16k.log ~/investigathon/queue_oss154.log; do
-  [ -f "$q" ] && { echo "### $(basename $q)"; tail -6 "$q"; }
+echo; echo "## Colas y controles (logs modificados en las últimas 24 h)"
+for q in $(find ~/investigathon -maxdepth 1 \( -name "queue_*.log" -o -name "gate_*.log" \) -mmin -1440 | sort); do
+  echo "### $(basename $q) | modificado $(date -u -r "$q" +%FT%TZ)"; tail -6 "$q"
 done
-pgrep -af "[q]ueue_|[g]ate_" | sed 's/^[0-9]* //' | cut -c1-80
-echo "## Corridas (archivos .out de los últimos 3 días)"
+echo "### Procesos de cola activos:"
+# Solo scripts .sh: el patrón suelto también coincidía con hilos del kernel (pool_workqueue_release).
+qp=$(pgrep -af "bash .*/([q]ueue_|[g]ate_)[^ ]*[.]sh" | sed 's/^[0-9]* //' | cut -c1-80)
+echo "${qp:-ninguno}"
+echo "## Corridas (archivos .out de las últimas 24 h)"
 for o in $(find ~/investigathon -maxdepth 1 -name "run_*.out" -mmin -1440 | sort); do
   r=$(basename "$o" .out); a=logs/actions_$r.jsonl
   done_flag=$(grep -aq "Log: logs/" "$o" && echo "TERMINADA" || echo "sin terminar")
@@ -27,4 +30,8 @@ P
   grep -a "^Steps:" "$o" | tail -1 | sed 's/  */ /g'
   sed -n '/total time/,/Log:/p' "$o" | grep -a "total time\|passed_all\|passed_visible_only\|failed_visible\|files_modified\|WARNING" | sed 's/  */ /g' 
 done
-echo "## Últimos errores de Ollama"; grep -i "error\|panic\|out of memory" ~/investigathon/ollama.log | tail -3
+if pgrep -x ollama >/dev/null; then
+  echo "## Últimos errores de Ollama"; grep -i "error\|panic\|out of memory" ~/investigathon/ollama.log | tail -3
+else
+  echo "## Ollama: apagado (a propósito)"
+fi
