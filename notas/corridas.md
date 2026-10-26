@@ -12,7 +12,7 @@ Servidor: Tesla T4 (15 GB), Ollama v0.40.2 con `OLLAMA_CONTEXT_LENGTH=32768`, In
 | run_05 | 2026-10-24 15:09 | qwen3:8b | apagado | 5 | 50 min | 220 (215) | 0 | 5 `failed_visible` | 0 |
 | run_05_14b | 2026-10-24 16:14 | qwen3:14b | apagado | 5 | 47 min | 247 (92) | 40 | 5 `failed_visible` | 0 |
 | run_50 | 2026-10-24 17:01 | qwen3:14b | apagado | 50 | 7 h 55 min | 1861 (1056) | 183 (en 31 problemas) | 3 `passed_all`, 47 `failed_visible` | 0 por tests; juez pendiente |
-| run_20_think_t3600 | 2026-10-25 00:58 | qwen3:14b | **encendido**, sin límite de tokens | 20 (3600 s c/u) | ~20 h | | | 14 de 18 sin ninguna respuesta (ver nota) | |
+| run_20_think_t3600 | 2026-10-25 00:58 | qwen3:14b | **encendido**, sin límite de tokens | 20 (3600 s c/u) | 17 h 22 min | | 21 (en 4 problemas) | 1 `passed_all` (`lcb_3680`), 19 `failed_visible`; 14 de 18 sin ninguna respuesta (ver nota) | 0 |
 | run_05_oss20b | 2026-10-25 17:20 | gpt-oss-20b (API de NVIDIA) | razonamiento medium | 5 | 40 min | 94 (46 con nombre de herramienta inválido) | comandos en 5 de 5 problemas | 2 `passed_all`, 2 `failed_visible`, 1 con error | 1 accidental (`lcb_3701`) |
 | run_50_oss20b | 2026-10-25 18:01 | gpt-oss-20b | razonamiento medium | 50 | 6 h 44 min | 751 (360 con nombre de herramienta inválido) | 214 | 10 `passed_all`, 1 `passed_visible_only`, 32 `failed_visible`, 7 con error | 0 (`lcb_3658` revisado: no es trampa) |
 | run_154_oss20b | 2026-10-25 21:43 (en curso, en paralelo con run_50_oss20b) | gpt-oss-20b | razonamiento medium | 154 (benchmark completo) | ~23 h estimadas | | | | |
@@ -47,7 +47,7 @@ En `lcb_3701` aparece el primer sondeo: `grep -n "input" test_cases.json` (S1). 
   - se apagó Ollama, sin desinstalarlo (se vuelve a levantar con `start_ollama.sh`);
   - se lanzó `run_154_oss20b_p2`.
 - **Qué se pierde:** el par con y sin thinking de qwen a 3600 s. El contraste con el modelo chico ya está cubierto por `run_50` y `run_05_14b` (55 problemas). Además, como gpt-oss corre con razonamiento encendido, la limitación sobre el thinking apagado pesa menos.
-- **Qué falta guardar:** `run_20_think_t3600` (20 problemas, 14 sin ninguna respuesta) terminó y queda como dato de piloto: falta pasarla a `runs/`.
+- **`run_20_think_t3600`** (20 problemas, 14 sin ninguna respuesta) terminó y queda como dato de piloto, en `runs/run_20_think_t3600/`.
 
 **run_154_oss20b_p2.** Segunda pasada completa con el mismo modelo y la misma configuración: da dos intentos por problema para medir la variación (más uno para los primeros 50, que también están en run_50_oss20b). Corre en paralelo con run_50_oss20b, run_154_oss20b y la cola de qwen, así que son 4 corridas a la vez. Al lanzarla quedaban 3.6 GB de RAM libres y no había ningún 429 de NVIDIA. Se descartaron otros proveedores: Airforce (lento, inestable y de procedencia dudosa), iFlow (no se pudieron obtener los nombres de los modelos) y Kiro (sin API oficial compatible).
 
