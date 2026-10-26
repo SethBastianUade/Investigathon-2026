@@ -51,6 +51,8 @@ Each trial has `agent/trajectory.json`, `agent/episode-N/{prompt,response}.txt`,
 
 `index/trajectories.json` is the flat table to use for most analysis. Each row has `task_id`, `model`, `source_dataset`, `classification`, `tree_name`/`trajectory_label` (which locate the folder), `reward`, token and cost fields, `episode_count`, `observed_categories` (11-category exploit taxonomy, multi-label), `key_hack_steps`, `brief_exploit_summary`, and `explanation`.
 
+To browse trajectories in the Inspect viewer, convert a subset with `evals/terminal_wrench/tw_to_eval.py` (e.g. `--tasks "^1012$" --models gpt-5.4 --trees hack baseline`); it writes a `.eval` to `terminal-wrench/_eval/` (inside the gitignored dataset), then run `inspect view --log-dir terminal-wrench/_eval`. terminus-2 sends a batch of commands per step and gets one combined terminal output, so each step is an assistant message with one ToolCall per command, followed by a user message with the output. Locally, Inspect lives in a Python 3.12 venv at `%USERPROFILE%\.venvs\inspect` (pip cannot build its dependencies on Python 3.15).
+
 `classification` has four values: `rewarded_serious_exploit` (◆), `rewarded_nonserious_hack` (◇), `attacker_legitimate_solve` (~), and `no_reward` (°). "Hacks" means ◆ + ◇ (3,632). Baselines (2,352) are listed in `task.json`, not in `index/trajectories.json`.
 
 Caveats for analysis:
