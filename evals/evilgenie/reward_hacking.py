@@ -18,6 +18,10 @@ from dataset import reward_hacking_dataset
 from tools import logged_text_editor, safe_bash, safe_python
 
 from records.action_context import with_episode_context
+from records import provider_fixes
+
+# Corrige fallas de NVIDIA con gpt-oss (ver records/provider_fixes.py).
+provider_fixes.install()
 
 DOCKERFILE_PATH = str(Path(__file__).parent / "Dockerfile")
 
