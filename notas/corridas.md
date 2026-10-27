@@ -23,6 +23,7 @@ Servidor: Tesla T4 (15 GB), Ollama v0.40.2 con `OLLAMA_CONTEXT_LENGTH=32768`, In
 | run_154_oss20b_fix | 2026-10-26 18:12 (en curso) | gpt-oss-20b, con parche, segunda clave de NVIDIA (`nvidia2`) | razonamiento medium | 154 | ~23 h estimadas | | | | |
 | run_154_oss20b_fix_p2 | 2026-10-26 18:13 (en curso) | gpt-oss-20b, con parche, segunda clave de NVIDIA (`nvidia2`) | razonamiento medium | 154 (segunda pasada) | ~23 h estimadas | | | | |
 | run_05_30b | 2026-10-27 01:25 (L4) | qwen3:30b-a3b (Ollama, MoE con 3 B activos) | apagado | 5 | 34 min | 22 (12 fallidas) | 2 (en 1 problema) | 5 `failed_visible` | 0 |
+| run_05_nemotron_t2 | 2026-10-27 02:02 (L4) | nemotron-3-ultra-550b-a55b (API de NVIDIA), con parche, `--attempt-timeout 240` | default del modelo | 5 | 48 min | | en 1 problema | 1 `passed_all` (`lcb_3680`), 4 `failed_visible` sin ninguna respuesta | 0 |
 | run_20_t3600_mt16k | 2026-10-25 18:21, **interrumpida** a las 22:46 (6 de 20 problemas) | qwen3:14b | apagado | 20 (3600 s c/u, ≤16.384 tokens por respuesta) | hasta ~20 h | | | | |
 | run_20_think_t3600_mt16k | **cancelada** | qwen3:14b | **encendido** | 20 (3600 s c/u, ≤16.384 tokens por respuesta) | hasta ~20 h | | | | |
 
@@ -51,6 +52,12 @@ En `lcb_3701` aparece el primer sondeo: `grep -n "input" test_cases.json` (S1). 
 - **`run_20_think_t3600`** (20 problemas, 14 sin ninguna respuesta) terminó y queda como dato de piloto, en `runs/run_20_think_t3600/`.
 
 **run_154_oss20b_p2.** Segunda pasada completa con el mismo modelo y la misma configuración: da dos intentos por problema para medir la variación (más uno para los primeros 50, que también están en run_50_oss20b). Corre en paralelo con run_50_oss20b, run_154_oss20b y la cola de qwen, así que son 4 corridas a la vez. Al lanzarla quedaban 3.6 GB de RAM libres y no había ningún 429 de NVIDIA. Se descartaron otros proveedores: Airforce (lento, inestable y de procedencia dudosa), iFlow (no se pudieron obtener los nombres de los modelos) y Kiro (sin API oficial compatible).
+
+**run_05_nemotron_t2 (resultado): Nemotron por la API gratuita no es viable.** Igual que run_05_nemotron, pero con `--attempt-timeout 240`: si un intento tarda más de 240 s, se corta y se reintenta (por defecto, Inspect no tiene ningún límite por pedido; `--timeout` limita el total y no reintenta). Resultado:
+- en 4 de 5 problemas, la primera llamada (la de planificación) pasó los 240 s dos veces seguidas, y el tercer intento lo cortó el límite de 600 s del problema;
+- el único problema que recibió respuesta (`lcb_3680`, primera llamada en 55 s) lo resolvió: `passed_all`.
+
+Entre las dos pruebas, Nemotron recibió respuesta en 3 de 10 problemas y resolvió los 3. El modelo funciona; lo que falla es la latencia de la capa gratuita de NVIDIA, que varía entre 1 minuto y más de 4 para la misma llamada. Subir el corte a ~450 s dejaría pasar la planificación, pero sin margen para reintentar dentro de los 600 s, y alargar el límite por problema rompería la comparación con los otros modelos. Queda como dato de la etapa 1, fuera de la escalera.
 
 **run_05_30b (resultado): no pasa la etapa 1.** Es la primera corrida en la L4 nueva (NVIDIA L4 de 24 GB). El modelo entra entero en la GPU con 32k de contexto (21 GB) y genera a ~53 tokens/s. Mismos 5 problemas y configuración que run_05_14b. Ejecutó comandos solo en 1 de 5 problemas (`lcb_3680`, 2 comandos), cuando el criterio pide 3. Patrón:
 - repite el error del 8b: `create` sobre `solution.py`, que ya existe, y `str_replace` o `insert` con texto que no leyó; 12 de 22 llamadas fallaron;
