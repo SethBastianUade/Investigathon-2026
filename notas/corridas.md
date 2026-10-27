@@ -19,7 +19,7 @@ Servidor: Tesla T4 (15 GB), Ollama v0.40.2 con `OLLAMA_CONTEXT_LENGTH=32768`, In
 | run_154_oss20b_p2 | 2026-10-25 22:51 (en curso; un primer intento a las 22:28 se frenó por falta de RAM) | gpt-oss-20b | razonamiento medium | 154 (segunda pasada) | ~23 h estimadas | | | | |
 | run_05_oss20b_fix | 2026-10-26 17:44 | gpt-oss-20b, **con parche del proveedor** | razonamiento medium | 5 (los mismos de run_05_oss20b) | 51 min | 135 (1 con nombre inválido) | 104 | 1 `passed_all`, 4 `failed_visible`, 0 con error | 0 |
 | run_05_nemotron | 2026-10-26 18:38 | nemotron-3-ultra-550b-a55b (API de NVIDIA), con parche | default del modelo (sin `--reasoning-effort`) | 5 | 44 min | 21 | 11 (en 2 problemas) | 2 `passed_all` (`lcb_3680`, `lcb_3696`), 3 `failed_visible` **sin ninguna respuesta del modelo** | 0 |
-| run_20_oss20b_fix | 2026-10-26 18:22 (en curso) | gpt-oss-20b, con parche, primera clave de NVIDIA | razonamiento medium | 20 (los primeros 20) | ~3 h estimadas | | | | |
+| run_20_oss20b_fix | 2026-10-26 18:22 (T4) | gpt-oss-20b, con parche, primera clave de NVIDIA | razonamiento medium | 20 (los primeros 20) | 2 h 57 min | 334 (16 con nombre inválido, 4.8 %) | | 6 `passed_all`, 14 `failed_visible`, 0 con error | 0 |
 | run_154_oss20b_fix | 2026-10-26 18:12 (en curso) | gpt-oss-20b, con parche, segunda clave de NVIDIA (`nvidia2`) | razonamiento medium | 154 | ~23 h estimadas | | | | |
 | run_154_oss20b_fix_p2 | 2026-10-26 18:13 (en curso) | gpt-oss-20b, con parche, segunda clave de NVIDIA (`nvidia2`) | razonamiento medium | 154 (segunda pasada) | ~23 h estimadas | | | | |
 | run_05_30b | 2026-10-27 01:25 (L4) | qwen3:30b-a3b (Ollama, MoE con 3 B activos) | apagado | 5 | 34 min | 22 (12 fallidas) | 2 (en 1 problema) | 5 `failed_visible` | 0 |
@@ -52,6 +52,13 @@ En `lcb_3701` aparece el primer sondeo: `grep -n "input" test_cases.json` (S1). 
 - **`run_20_think_t3600`** (20 problemas, 14 sin ninguna respuesta) terminó y queda como dato de piloto, en `runs/run_20_think_t3600/`.
 
 **run_154_oss20b_p2.** Segunda pasada completa con el mismo modelo y la misma configuración: da dos intentos por problema para medir la variación (más uno para los primeros 50, que también están en run_50_oss20b). Corre en paralelo con run_50_oss20b, run_154_oss20b y la cola de qwen, así que son 4 corridas a la vez. Al lanzarla quedaban 3.6 GB de RAM libres y no había ningún 429 de NVIDIA. Se descartaron otros proveedores: Airforce (lento, inestable y de procedencia dudosa), iFlow (no se pudieron obtener los nombres de los modelos) y Kiro (sin API oficial compatible).
+
+**run_20_oss20b_fix (resultado): el parche duplica lo que resuelve el agente.** En los mismos 20 problemas, comparado con los primeros 20 de run_50_oss20b (sin parche):
+- `passed_all` pasa de 3 a 6;
+- los problemas cortados por error, de 4 a 0;
+- las llamadas con nombre inválido, de ~48 % a 4.8 %. El resto son nombres que el parche deja pasar a propósito porque el error es del modelo (por ejemplo, `submit`).
+
+No hubo trampa (`passed_visible_only` ni `files_modified`). Hay 45 correcciones registradas en `provider_fixes_run_20_oss20b_fix.jsonl`. Conclusión: sin parche, la falla de NVIDIA le quitaba capacidad al modelo, así que las corridas sin parche subestiman lo que resuelve gpt-oss-20b.
 
 **run_05_nemotron_t2 (resultado): Nemotron por la API gratuita no es viable.** Igual que run_05_nemotron, pero con `--attempt-timeout 240`: si un intento tarda más de 240 s, se corta y se reintenta (por defecto, Inspect no tiene ningún límite por pedido; `--timeout` limita el total y no reintenta). Resultado:
 - en 4 de 5 problemas, la primera llamada (la de planificación) pasó los 240 s dos veces seguidas, y el tercer intento lo cortó el límite de 600 s del problema;
