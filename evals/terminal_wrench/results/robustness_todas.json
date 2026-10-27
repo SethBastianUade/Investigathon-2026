@@ -1,0 +1,212 @@
+{
+  "claude-opus-4.6": {
+    "hack_vs_legitimate": {
+      "base": {
+        "auc_crudo": 0.4111257008056818,
+        "misma_tarea": {
+          "pares": 131,
+          "gana_primero": 57,
+          "gana_segundo": 52,
+          "empates": 22,
+          "p_signos": 0.701811182064683
+        },
+        "control_largo": {
+          "auc_ponderado": 0.4763507930948142,
+          "deciles_usados": 10,
+          "auc_min": 0.4064301939542198,
+          "auc_max": 0.5428378378378378
+        }
+      },
+      "?_como_sondeo": {
+        "auc_crudo": 0.4028417708466577,
+        "misma_tarea": {
+          "pares": 131,
+          "gana_primero": 53,
+          "gana_segundo": 65,
+          "empates": 13,
+          "p_signos": 0.3112309933213218
+        },
+        "control_largo": {
+          "auc_ponderado": 0.47407352720723017,
+          "deciles_usados": 10,
+          "auc_min": 0.4171994098844357,
+          "auc_max": 0.5831531531531532
+        }
+      }
+    },
+    "ataque_vs_base": {
+      "base": {
+        "auc_crudo": 0.7328150096449749,
+        "misma_tarea": {
+          "pares": 323,
+          "gana_primero": 248,
+          "gana_segundo": 47,
+          "empates": 28,
+          "p_signos": 3.750406168041611e-34
+        },
+        "control_largo": {
+          "auc_ponderado": 0.6792234342763552,
+          "deciles_usados": 10,
+          "auc_min": 0.5976277372262774,
+          "auc_max": 0.7561226521537134
+        }
+      },
+      "?_como_sondeo": {
+        "auc_crudo": 0.6962352183151327,
+        "misma_tarea": {
+          "pares": 323,
+          "gana_primero": 236,
+          "gana_segundo": 63,
+          "empates": 24,
+          "p_signos": 1.0918378230593699e-24
+        },
+        "control_largo": {
+          "auc_ponderado": 0.6275850388945676,
+          "deciles_usados": 10,
+          "auc_min": 0.5185702018033491,
+          "auc_max": 0.6946306497643857
+        }
+      }
+    }
+  },
+  "gemini-3.1-pro": {
+    "hack_vs_legitimate": {
+      "base": {
+        "auc_crudo": 0.414293258229185,
+        "misma_tarea": {
+          "pares": 21,
+          "gana_primero": 9,
+          "gana_segundo": 7,
+          "empates": 5,
+          "p_signos": 0.803619384765625
+        },
+        "control_largo": {
+          "auc_ponderado": 0.48782817985365484,
+          "deciles_usados": 5,
+          "auc_min": 0.31476510067114094,
+          "auc_max": 0.5793918918918919
+        }
+      },
+      "?_como_sondeo": {
+        "auc_crudo": 0.3887783840873086,
+        "misma_tarea": {
+          "pares": 21,
+          "gana_primero": 9,
+          "gana_segundo": 9,
+          "empates": 3,
+          "p_signos": 1.0
+        },
+        "control_largo": {
+          "auc_ponderado": 0.5106940048599232,
+          "deciles_usados": 5,
+          "auc_min": 0.28187919463087246,
+          "auc_max": 0.6908450704225352
+        }
+      }
+    },
+    "ataque_vs_base": {
+      "base": {
+        "auc_crudo": 0.5073705877488733,
+        "misma_tarea": {
+          "pares": 321,
+          "gana_primero": 120,
+          "gana_segundo": 141,
+          "empates": 60,
+          "p_signos": 0.21565006963665603
+        },
+        "control_largo": {
+          "auc_ponderado": 0.5153990029658823,
+          "deciles_usados": 10,
+          "auc_min": 0.4525066590563166,
+          "auc_max": 0.5936266486954848
+        }
+      },
+      "?_como_sondeo": {
+        "auc_crudo": 0.47645945859597294,
+        "misma_tarea": {
+          "pares": 321,
+          "gana_primero": 114,
+          "gana_segundo": 158,
+          "empates": 49,
+          "p_signos": 0.009003283026206059
+        },
+        "control_largo": {
+          "auc_ponderado": 0.47559351611894524,
+          "deciles_usados": 10,
+          "auc_min": 0.4049657534246575,
+          "auc_max": 0.5312409742947916
+        }
+      }
+    }
+  },
+  "gpt-5.4": {
+    "hack_vs_legitimate": {
+      "base": {
+        "auc_crudo": 0.4998796497482403,
+        "misma_tarea": {
+          "pares": 54,
+          "gana_primero": 28,
+          "gana_segundo": 22,
+          "empates": 4,
+          "p_signos": 0.47988766169832786
+        },
+        "control_largo": {
+          "auc_ponderado": 0.5018793057103459,
+          "deciles_usados": 10,
+          "auc_min": 0.3492063492063492,
+          "auc_max": 0.6242603550295858
+        }
+      },
+      "?_como_sondeo": {
+        "auc_crudo": 0.521854955177663,
+        "misma_tarea": {
+          "pares": 54,
+          "gana_primero": 23,
+          "gana_segundo": 27,
+          "empates": 4,
+          "p_signos": 0.6718110337653656
+        },
+        "control_largo": {
+          "auc_ponderado": 0.5332232706463584,
+          "deciles_usados": 10,
+          "auc_min": 0.33690476190476193,
+          "auc_max": 0.6490384615384616
+        }
+      }
+    },
+    "ataque_vs_base": {
+      "base": {
+        "auc_crudo": 0.7214738541879209,
+        "misma_tarea": {
+          "pares": 313,
+          "gana_primero": 240,
+          "gana_segundo": 48,
+          "empates": 25,
+          "p_signos": 7.145859737076215e-32
+        },
+        "control_largo": {
+          "auc_ponderado": 0.6006907330810837,
+          "deciles_usados": 10,
+          "auc_min": 0.49067113176599236,
+          "auc_max": 0.7123145554518103
+        }
+      },
+      "?_como_sondeo": {
+        "auc_crudo": 0.6783178018516629,
+        "misma_tarea": {
+          "pares": 313,
+          "gana_primero": 221,
+          "gana_segundo": 70,
+          "empates": 22,
+          "p_signos": 2.123235432228932e-19
+        },
+        "control_largo": {
+          "auc_ponderado": 0.5164943337980771,
+          "deciles_usados": 10,
+          "auc_min": 0.4017564242755604,
+          "auc_max": 0.638188608776844
+        }
+      }
+    }
+  }
+}
