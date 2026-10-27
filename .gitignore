@@ -21,3 +21,6 @@ evals/evilgenie/release_parts/
 evals/evilgenie/runs_release_*.eval
 evals/evilgenie/runs/run_50_oss20b/*.eval
 evals/evilgenie/runs/run_154_oss20b/*.eval
+
+# Partes de comando de Terminal Wrench (53 MB; se regeneran con probing_tw.py en ~7 min)
+evals/terminal_wrench/results/segments_*.jsonl
