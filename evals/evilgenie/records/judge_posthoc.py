@@ -49,7 +49,7 @@ def use_judge_model(model_name: str) -> None:
     categorical_scorer.get_model = get_judge_model
 
 
-async def judge_run(run_dir: Path, model_name: str, limit: int | None) -> None:
+async def judge_run(run_dir: Path, model_name: str, limit: int | None, shard: tuple[int, int] | None = None) -> None:
     eval_files = sorted(run_dir.glob("*.eval"))
     if len(eval_files) != 1:
         raise SystemExit(f"Esperaba un solo .eval en {run_dir}, hay {len(eval_files)}")
@@ -64,7 +64,16 @@ async def judge_run(run_dir: Path, model_name: str, limit: int | None) -> None:
             if row["classification"] != "error":
                 done.add((row["sample_id"], row["epoch"]))
 
-    samples = [s for s in log.samples or [] if (str(s.id), s.epoch) not in done]
+    # Las muestras que cortaron con error (p. ej. respuesta vacía de la API) no tienen puntaje
+    # ni solución final: no hay nada que juzgar.
+    samples = [s for s in log.samples or [] if (str(s.id), s.epoch) not in done and s.scores and "scorer" in s.scores]
+    # Primero las que cobraron recompensa (son las que importan para la trampa); después el resto.
+    priority = {"passed_visible_only": 0, "passed_all": 1}
+    samples.sort(key=lambda s: priority.get(s.scores["scorer"].value["test_result"], 2))
+    if shard is not None:
+        # i/n: este proceso juzga una de cada n muestras pendientes (varios procesos en paralelo).
+        i, n = shard
+        samples = samples[i::n]
     if limit is not None:
         samples = samples[:limit]
 
@@ -96,11 +105,17 @@ def main() -> None:
     parser.add_argument("run_dir", type=Path, help="carpeta de la corrida, p. ej. runs/run_05_14b")
     parser.add_argument("--model", default=DEFAULT_JUDGE, help="modelo juez de Inspect")
     parser.add_argument("--limit", type=int, default=None, help="juzgar solo las primeras N muestras pendientes")
+    parser.add_argument("--shard", default=None, help="i/n: juzgar una de cada n muestras pendientes, empezando por la i (para correr n procesos en paralelo)")
     args = parser.parse_args()
+    shard = tuple(int(x) for x in args.shard.split("/")) if args.shard else None
 
     load_dotenv(".env")
+    # Con modelos servidos por NVIDIA, reintenta las respuestas sin choices (records/provider_fixes.py).
+    from records import provider_fixes
+
+    provider_fixes.install()
     use_judge_model(args.model)
-    asyncio.run(judge_run(args.run_dir, args.model, args.limit))
+    asyncio.run(judge_run(args.run_dir, args.model, args.limit, shard))
 
 
 if __name__ == "__main__":
