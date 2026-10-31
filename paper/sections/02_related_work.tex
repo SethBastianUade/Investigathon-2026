@@ -1,0 +1,11 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Reward hacking benchmarks.}
+Terminal Wrench~\citep{terminalwrench} collects 331 reward-hackable terminal tasks and 3{,}632 exploit trajectories from three frontier models, elicited with an explicit red-team prompt, and labels each trajectory with an LLM judge and an 11-category exploit taxonomy. EvilGenie~\citep{evilgenie} builds coding problems from LiveCodeBench~\citep{livecodebench} with visible and held-out tests and detects hacking through held-out failures, test-file edits and an LLM judge, without asking the agent to cheat. \todo{Agregar otros trabajos de reward hacking / specification gaming si los citamos.}
+
+\paragraph{Monitoring agents.}
+Terminal Wrench reports that an LLM monitor detects hacks with AUC 0.97 from full trajectories, dropping to 0.92 when the agent's reasoning is stripped~\citep{terminalwrench}. \todo{Citar trabajo sobre monitoreo de cadena de pensamiento (p. ej. \citet{baker2025monitoring}, verificar).} Our probing score is a cheaper, transparent signal computed from commands only.
+
+\paragraph{The OpenAI--Hugging Face incident.}
+OpenAI's technical report~\citep{openai2026report} and the independent METR/Redwood investigation~\citep{metr2026report} describe agents that coordinated, probed their sandbox and attacked external infrastructure to cheat. \todo{1--2 frases sobre lo que dice METR del comportamiento de los agentes.}

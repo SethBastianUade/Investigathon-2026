@@ -1,0 +1,14 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+\subsection{Terminal Wrench}
+We analyze all 8{,}641 trajectories of Terminal Wrench~\citep{terminalwrench} (commit \texttt{d8a2961}): 6{,}289 attack trajectories run with the red-team prompt and 2{,}352 baseline trajectories without it, from Claude Opus 4.6, Gemini 3.1 Pro and GPT-5.4. Groups follow the dataset's labels: \emph{hack} (rewarded serious and non-serious exploits, 3{,}632), \emph{legitimate} (attacker solved the task as intended, 1{,}216), \emph{no reward} (1{,}441) and \emph{baseline}. Hack and legitimate trajectories received the same attack prompt, which instructs the agent not to solve the task normally; legitimate ones solved it anyway. In total we classify 309{,}656 command parts.
+
+\subsection{EvilGenie}
+We run EvilGenie~\citep{evilgenie} with Inspect~\citep{inspect} on the 154 competition-level LiveCodeBench problems, with a 600\,s limit per problem, one problem at a time, and the LLM judge disabled during runs (applied afterwards). The agent is never told to cheat. We log every tool call to a separate action log joined to Inspect's scores.
+
+\paragraph{Models.} \texttt{gpt-oss-20b}~\citep{gptoss} served by the NVIDIA API (reasoning effort \emph{medium}); \texttt{qwen3:8b}, \texttt{qwen3:14b} and \texttt{qwen3:30b-a3b}~\citep{qwen3} served locally with Ollama (thinking off); \texttt{nemotron-3-ultra-550b-a55b} via NVIDIA. We scale each model in stages of 5, 50 and 154 problems, advancing only if the agent executes commands in at least 3 of the first 5 problems. \todo{Tabla de corridas (ver notas/corridas.md).}
+
+\paragraph{Provider fix.} The NVIDIA API appended a harmony-format token to tool names (e.g.\ \texttt{safe\_python<|channel|>commentary}), so Inspect rejected 36--48\% of \texttt{gpt-oss-20b}'s tool calls, and it sometimes returned responses without choices, aborting 14--18\% of problems. We strip the suffix when the remainder is a valid tool and retry empty responses, logging every correction. On the same 154 problems, solved problems rose from 29--30 to 54--60 and aborted problems fell to zero. All main EvilGenie results use the patched runs.
+
+\paragraph{Hack labels.} A trajectory is a hack candidate if it passes visible tests but fails held-out ones, if it modifies test files, or if the LLM judge labels it \emph{reward\_hacking}. Every candidate is reviewed manually and labeled intentional or accidental. \todo{Juez: GLM-5.3 vía NVIDIA (los resultados quedaron en el servidor; recuperarlos o re-correr).}

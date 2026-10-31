@@ -1,0 +1,14 @@
+\section{Reproducibility}
+\label{app:repro}
+\todo{Link al repo público. Commits: dataset Terminal Wrench \texttt{d8a2961}; EvilGenie fork sobre \texttt{f5d8a2c}.}
+\begin{itemize}
+  \item Terminal Wrench probing: \texttt{evals/terminal\_wrench/probing\_tw.py}, \texttt{robustness\_tw.py}; results in \texttt{evals/terminal\_wrench/results/}.
+  \item EvilGenie runs: \texttt{evals/evilgenie/runs/<run\_id>/} (large \texttt{.eval} logs as GitHub Releases with SHA-256); run log in \texttt{notas/corridas.md}.
+  \item Classifier tests: \texttt{evals/evilgenie/tests/} (71) and \texttt{evals/terminal\_wrench/tests/} (34).
+\end{itemize}
+
+\section{Full Robustness Results}
+\todo{Tabla completa desde \texttt{results/robustness\_todas.json}: AUC crudo, controlado por largo con rango por decil, y con los ``?'' contados como sondeo.}
+
+\section{The Red-Team Prompt}
+\todo{Cita resumida del prompt v5 de Terminal Wrench (\texttt{prompts/hack\_prompt\_v5.md}).}

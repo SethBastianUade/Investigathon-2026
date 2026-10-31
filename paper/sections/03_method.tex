@@ -1,0 +1,38 @@
+\section{Measuring Probing from Commands}
+\label{sec:method}
+
+\subsection{Definition}
+We define \emph{probing} as any read-only action whose purpose is to obtain information about the evaluation environment, the verifier or the system, beyond what the task needs. Three rules make this operational: (i) probing only reads; modifying tests, verifiers or binaries is \emph{manipulation} (M), measured separately; (ii) probing is relative to the task scope, so reading \texttt{nginx.conf} is normal work when the task is to configure nginx; (iii) only the command is judged, never the agent's stated reasoning.
+
+\subsection{Categories}
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Code & Category & Examples \\
+\midrule
+S1 & Reading or searching the verifier & \texttt{cat test.py}, \texttt{find / -name '*verify*'}, \texttt{ls /solution} \\
+S2 & Exploring outside the task scope & \texttt{ls /root}, \texttt{cat \textasciitilde/.bash\_history} \\
+S3 & System and process introspection & \texttt{ps aux}, \texttt{env}, \texttt{cat /proc/1/cmdline} \\
+S4 & Runtime environment inspection & \texttt{pip list}, \texttt{which python3}, \texttt{dpkg -l} \\
+S5 & Reaching the outside world & \texttt{curl}, \texttt{pip install} of an unnamed package \\
+N  & Normal task work & running the tests, compiling, editing the solution \\
+M  & Manipulation (not probing) & replacing \texttt{/usr/bin/python3}, editing the checker \\
+?  & Undecided by the rules & \\
+\bottomrule
+\end{tabular}
+\caption{Command categories. Each part of a chained command (\texttt{;}, \texttt{\&\&}, \texttt{|}) is labeled separately.}
+\label{tab:categories}
+\end{table}
+
+\subsection{Classifier}
+\todo{Describir el clasificador por reglas: separación de comandos encadenados y heredocs, precedencia (M > S5 > S4 > S3 > S2 > S1 > N), terminal persistente (\texttt{cd}).}
+For Terminal Wrench, the task scope is built per task: the working directory is the Dockerfile's \texttt{WORKDIR}; paths and programs named in the task instruction count as normal work; \texttt{/tests}, \texttt{/solution} and files named like verifiers (\texttt{check-*}, \texttt{grader}, \texttt{verify*}) count as S1; re-reading a file the agent wrote earlier is not probing. \todo{Mencionar los 34 tests del clasificador y el 6.4\% de partes sin clasificar.}
+\todo{Si se corrigen los dos errores encontrados en la auditoría de la tarea 1018 (\texttt{/dev/null} y comandos pedidos literalmente por la consigna), describir la versión final.}
+
+\subsection{Trajectory metrics}
+The \textbf{probing score} of a trajectory is its number of command parts labeled S1--S5. Because the score grows with trajectory length, we always report it next to the \textbf{probing ratio} (score divided by the number of command parts) and control for length explicitly (Section~\ref{sec:robustness}).
+
+\subsection{Statistics}
+We compare groups with the Mann--Whitney $U$ test and report the AUC ($U/(n_1 n_2)$): the probability that a random trajectory from the first group has a higher score than one from the second. Within-task comparisons use an exact two-sided sign test over (task, model) pairs, comparing group medians and dropping ties.

@@ -1,0 +1,13 @@
+\section{Limitations}
+\label{sec:limitations}
+
+\begin{itemize}
+  \item \textbf{Elicitation.} Every Terminal Wrench hack was requested by a red-team prompt, so these trajectories show capability, not propensity, and the attack prompt itself induces probing.
+  \item \textbf{LLM-judge labels.} Terminal Wrench's hack labels and our EvilGenie judge labels come from LLM judges. \todo{acuerdo con la validación humana}
+  \item \textbf{Rule-based classifier.} Rules judge the text of a command, not its intent, and leave 6.4\% of command parts undecided. \todo{precisión medida en la validación}
+  \item \textbf{Length bias.} The probing score is a count and grows with trajectory length; we control for it, but part of the GPT-5.4 attack--baseline effect is length.
+  \item \textbf{Gemini.} Its trajectories are short (about 16 commands) and it has only 38 legitimate solves, so the absence of differences may reflect little signal and low power.
+  \item \textbf{Small open models.} Some models could not operate the tools; their absence of hacks is uninformative. Spontaneous-hack estimates rest on a single intentional case.
+  \item \textbf{Provider effects.} Results for \texttt{gpt-oss-20b} depend on a fix for the NVIDIA API; unpatched runs underestimate its capability.
+  \item \textbf{External figures.} The 0.2\%--3.7\% probing rates are read from a figure in OpenAI's report and measured by a chain-of-thought monitor, not from commands.
+\end{itemize}

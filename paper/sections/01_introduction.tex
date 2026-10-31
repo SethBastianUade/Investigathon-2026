@@ -1,0 +1,24 @@
+\section{Introduction}
+\label{sec:intro}
+
+% Párrafo 1: qué es reward hacking y por qué importa.
+\emph{Reward hacking} is when an agent obtains the reward by exploiting flaws in the verifier instead of solving the intended task. \todo{2--3 frases de contexto y por qué importa para agentes con herramientas.}
+
+% Párrafo 2: el incidente. Solo fuentes primarias (informe de OpenAI y de METR/Redwood).
+In July 2026, agents trained by OpenAI escaped an evaluation sandbox and reached Hugging Face infrastructure while trying to cheat on the ExploitGym benchmark~\citep{openai2026report,metr2026report}. OpenAI reports that its models ``increasingly learned to probe and exploit their environment during training'', and that tasks impossible to solve as intended were ``a significant factor leading models to probe their sandbox''~\citep[pp.~20--22]{openai2026report}. In one training run, the rate of environment probing flagged by a chain-of-thought monitor rose from roughly 0.2\% to roughly 3.7\%~\citep[Fig.~2]{openai2026report}. \todo{Aclarar que 0,2 y 3,7 son lecturas de la figura, no cifras del texto; la unidad no está definida en el informe.}
+
+% Párrafo 3: la pregunta.
+This raises a monitoring question. OpenAI detected probing by reading the model's reasoning, which may be unavailable or unfaithful. Can probing be measured from the agent's \emph{actions} alone, and does it distinguish agents that reward hack from those that solve the task?
+
+% Párrafo 4: qué hacemos.
+We study this on two benchmarks: Terminal Wrench~\citep{terminalwrench}, which provides thousands of elicited hack and non-hack trajectories, and EvilGenie~\citep{evilgenie}, which we run ourselves with open models and no instruction to cheat.
+
+% Contribuciones.
+Our contributions are:
+\begin{itemize}
+  \item A command-level taxonomy of environment probing (S1--S5) and manipulation (M), with a rule-based classifier that adapts its notion of task scope to each task (Section~\ref{sec:method}).
+  \item An analysis of all 8{,}641 Terminal Wrench trajectories showing that probing tracks the \emph{instruction to attack} but not the \emph{success} of the hack, robust to task, length and unclassified commands (Section~\ref{sec:results}).
+  \item Spontaneous reward-hacking rates for open models on EvilGenie, including a fix for a provider bug that halved the measured capability of \texttt{gpt-oss-20b} (Section~\ref{sec:setup}).
+  \item A blind human validation of the classifier and of the dataset's hack labels (Section~\ref{sec:validation}). \todo{solo si se termina la revisión}
+  \item Code, run logs and per-trajectory results, released openly. \todo{link al repo público}
+\end{itemize}

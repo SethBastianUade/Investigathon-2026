@@ -1,0 +1,4 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+Command-level probing separates agents instructed to attack from normal agents, robustly in Claude Opus 4.6, but it does not separate agents that succeeded at hacking from agents that, under the same instruction, solved the task. A monitor that only reads commands can therefore raise an early alarm that an agent is looking for weaknesses, without access to its reasoning, but deciding whether a hack happened still requires checking the outcome. When no one asks for it, spontaneous reward hacking by a small open model was rare, and in the one case we found, reading the verifier preceded the hack. \todo{Trabajo futuro: sondeo espontáneo en entrenamiento, modelos más capaces, monitores combinados comandos + resultado.}

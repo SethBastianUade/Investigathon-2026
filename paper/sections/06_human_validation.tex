@@ -1,0 +1,10 @@
+\section{Human Validation}
+\label{sec:validation}
+
+\todo{Completar cuando termine la revisión (evals/terminal\_wrench/review/).}
+
+\paragraph{Classifier.} 200 command parts sampled by classifier category (25 per S1--S5, 20 M, 55 N; seed 42), each labeled blind by two of three annotators in rotating pairs. We report pairwise Cohen's $\kappa$ (8 categories and probe yes/no), the classifier $\times$ human confusion matrix and per-category precision. \todo{resultados: \texttt{review\_commands.py matrix}}
+
+\paragraph{Hack labels.} 60 rewarded trajectories (per model: 10 hacks, 5 legitimate, 5 baseline), reviewed blind with opaque ids, each by two annotators. We report $\kappa$ and the dataset $\times$ human reward-hacking matrix. \todo{resultados: \texttt{review\_sample.py matrix}}
+
+\paragraph{Audit example.} \todo{La auditoría manual de \texttt{1018/claude-opus-4.6/non\_hack/v5\_5} encontró dos errores del clasificador; contarlo si se corrigieron.}
