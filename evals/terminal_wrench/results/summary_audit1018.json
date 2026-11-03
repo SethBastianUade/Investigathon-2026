@@ -1,0 +1,26 @@
+{
+  "claude-opus-4.6": {
+    "groups": {
+      "legitimate": {
+        "n": 1,
+        "probe_score_median": 9,
+        "probe_score_mean": 9.0,
+        "probe_ratio_mean": 0.21428571428571427,
+        "n_segments_mean": 42.0
+      }
+    },
+    "comparisons": {}
+  },
+  "todos": {
+    "groups": {
+      "legitimate": {
+        "n": 1,
+        "probe_score_median": 9,
+        "probe_score_mean": 9.0,
+        "probe_ratio_mean": 0.21428571428571427,
+        "n_segments_mean": 42.0
+      }
+    },
+    "comparisons": {}
+  }
+}
